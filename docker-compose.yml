@@ -1,0 +1,21 @@
+version: "3"
+
+networks:
+  auth-network:
+
+services:
+  plapp-social-db:
+    image: postgres:latest
+    container_name: plapp-social-db
+    ports:
+      - "5434:5433"
+    env_file:
+      - postgres.env
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    networks:
+      - auth-network
+
+volumes:
+  database-data:
+
