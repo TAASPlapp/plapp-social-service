@@ -26,10 +26,12 @@ public class SocialController {
 
 
     @Autowired
-    public SocialController(@RequestBody CommentRepository commentRepository,
-                            UserDetailsRepository userDetailsRepository) {
+    public SocialController(CommentRepository commentRepository,
+                            UserDetailsRepository userDetailsRepository,
+                            LikeRepository likeRepository) {
         this.commentRepository = commentRepository;
         this.userDetailsRepository = userDetailsRepository;
+        this.likeRepository = likeRepository;
     }
 
 
@@ -70,7 +72,7 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/comments")
-    public List<Comment> getComments(@RequestBody MediaContentType type, long itemId) throws Exception {
+    public List<Comment> getComments(@RequestBody MediaContentType type, @RequestParam long itemId) throws Exception {
         return commentRepository.findByMediaContentTypeAndAndItemId(type, itemId);
     }
 
@@ -87,7 +89,7 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/like/add")
-    public ApiResponse addlike(Like like) throws Exception {
+    public ApiResponse addlike(@RequestParam Like like) throws Exception {
         if (likeRepository.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty()) {
             try {
                 likeRepository.save(like);
@@ -110,9 +112,9 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/likes")
-    public List<UserDetails> getLikes(@RequestBody MediaContentType type, long itemId) throws Exception {
+    public List<UserDetails> getLikes(@RequestBody MediaContentType type, @RequestParam long itemId) throws Exception {
         List<UserDetails> users = new ArrayList<>();
-        List<Like> likes =  likeRepository.findByMediaContentTypeAndAndItemId(type, itemId);
+        List<Like> likes = likeRepository.findByMediaContentTypeAndAndItemId(type, itemId);
         for (Like l : likes) {
             users.add(l.getAuthor());
         }
