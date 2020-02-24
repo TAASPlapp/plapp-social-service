@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.github.TAASPlapp</groupId>
       <artifactId>plapp-data-entities</artifactId>
-      <version>bab3f4d5ae</version>
+      <version>95b042c15d</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
