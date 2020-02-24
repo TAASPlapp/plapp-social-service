@@ -9,6 +9,9 @@ import com.plapp.entities.utils.ApiResponse;
 import com.plapp.socialservice.repositories.CommentRepository;
 import com.plapp.socialservice.repositories.LikeRepository;
 import com.plapp.socialservice.repositories.UserDetailsRepository;
+import com.plapp.socialservice.service.CommentService;
+import com.plapp.socialservice.service.LikeService;
+import com.plapp.socialservice.service.UserDetailsService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,32 +23,32 @@ import java.util.List;
 @RequestMapping("/social")
 public class SocialController {
 
-    private CommentRepository commentRepository;
-    private UserDetailsRepository userDetailsRepository;
-    private LikeRepository likeRepository;
+    private CommentService commentService;
+    private LikeService likeService;
+    private UserDetailsService userDetailsService;
 
 
     @Autowired
-    public SocialController(CommentRepository commentRepository,
-                            UserDetailsRepository userDetailsRepository,
-                            LikeRepository likeRepository) {
-        this.commentRepository = commentRepository;
-        this.userDetailsRepository = userDetailsRepository;
-        this.likeRepository = likeRepository;
+    public SocialController(CommentService commentService,
+                            LikeService likeService,
+                            UserDetailsService userDetailsService) {
+        this.commentService = commentService;
+        this.likeService = likeService;
+        this.userDetailsService = userDetailsService;
     }
 
 
     @CrossOrigin
     @GetMapping("/user/{userId}")
-    public UserDetails getUserDetails(@PathVariable(value = "userId") long userId) throws Exception {
-        return userDetailsRepository.findByUserId(userId);
+    public UserDetails getUserDetails(@PathVariable(value = "userId") long userId) {
+        return userDetailsService.findByUserId(userId);
     }
 
     @CrossOrigin
     @PostMapping("/user/add")
-    public ApiResponse addUserDetails(@RequestBody UserDetails user) throws Exception {
+    public ApiResponse addUserDetails(@RequestBody UserDetails user) {
         try {
-            userDetailsRepository.save(user);
+            userDetailsService.addUser(user);
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
@@ -54,16 +57,9 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/user/modify")
-    public ApiResponse setUserDetails(@RequestBody UserDetails userDetails) throws Exception {
-        UserDetails user = userDetailsRepository.findByUserId(userDetails.getUserId());
-        user.setBio(userDetails.getBio());
-        user.setBirthdate(userDetails.getBirthdate());
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
-        user.setProfilePicture(userDetails.getProfilePicture());
-        user.setUsername(userDetails.getUsername());
+    public ApiResponse setUserDetails(@RequestBody UserDetails userDetails) {
         try {
-            userDetailsRepository.save(user);
+            userDetailsService.modifyUserDetail(userDetails);
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
@@ -72,15 +68,15 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/comments")
-    public List<Comment> getComments(@RequestBody MediaContentType type, @RequestParam long itemId) throws Exception {
-        return commentRepository.findByMediaContentTypeAndAndItemId(type, itemId);
+    public List<Comment> getComments(@RequestBody MediaContentType type, @RequestParam long itemId) {
+        return commentService.findByMediaContentTypeAndAndItemId(type, itemId);
     }
 
     @CrossOrigin
     @PostMapping("/comment/add")
-    public ApiResponse addComment(@RequestBody Comment comment) throws Exception {
+    public ApiResponse addComment(@RequestBody Comment comment) {
         try {
-            commentRepository.save(comment);
+            commentService.addComment(comment);
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
@@ -89,10 +85,10 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/like/add")
-    public ApiResponse addlike(@RequestParam Like like) throws Exception {
-        if (likeRepository.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty()) {
+    public ApiResponse addlike(@RequestParam Like like) {
+        if (likeService.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty()) {
             try {
-                likeRepository.save(like);
+                likeService.addLike(like);
             } catch (HibernateException e) {
                 return new ApiResponse(false, e.getMessage());
             }
@@ -103,22 +99,24 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/like/{likeId}/remove")
-    public ApiResponse unlike(@PathVariable(value = "likeId") long likeId) throws Exception {
-        if (!likeRepository.existsById(likeId))
-            return new ApiResponse(false, "Like does not exist");
-        likeRepository.deleteById(likeId);
+    public ApiResponse removeLike(@PathVariable(value = "likeId") long likeId) {
+        try {
+            likeService.unlike(likeId);
+        } catch (HibernateException e) {
+            return new ApiResponse(false, e.getMessage());
+        }
         return new ApiResponse();
     }
 
     @CrossOrigin
     @GetMapping("/likes")
-    public List<UserDetails> getLikes(@RequestBody MediaContentType type, @RequestParam long itemId) throws Exception {
-        List<UserDetails> users = new ArrayList<>();
-        List<Like> likes = likeRepository.findByMediaContentTypeAndAndItemId(type, itemId);
-        for (Like l : likes) {
-            users.add(l.getAuthor());
+    public List<UserDetails> getLikes(@RequestBody MediaContentType type, @RequestParam long itemId) {
+        try {
+            return likeService.getLikes(type, itemId);
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-        return users;
+        return new ArrayList<>();
     }
 
 
