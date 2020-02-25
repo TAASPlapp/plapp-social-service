@@ -1,6 +1,7 @@
 package com.plapp.socialservice.controllers;
 
 
+import com.plapp.entities.exceptions.ActorNotFoundException;
 import com.plapp.entities.social.Comment;
 import com.plapp.entities.social.Like;
 import com.plapp.entities.social.MediaContentType;
@@ -102,7 +103,7 @@ public class SocialController {
     public ApiResponse removeLike(@PathVariable(value = "likeId") long likeId) {
         try {
             likeService.unlike(likeId);
-        } catch (HibernateException e) {
+        } catch (ActorNotFoundException e) {
             return new ApiResponse(false, e.getMessage());
         }
         return new ApiResponse();

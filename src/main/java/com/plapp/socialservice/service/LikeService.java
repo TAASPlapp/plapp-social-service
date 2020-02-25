@@ -1,5 +1,6 @@
 package com.plapp.socialservice.service;
 
+import com.plapp.entities.exceptions.ActorNotFoundException;
 import com.plapp.entities.social.Like;
 import com.plapp.entities.social.MediaContentType;
 import com.plapp.entities.social.UserDetails;
@@ -21,13 +22,13 @@ public class LikeService {
         return likeRepository.findByMediaContentTypeAndAndItemId(mediaContentType, itemId);
     }
 
-    public Like addLike(Like like)throws HibernateException{
+    public Like addLike(Like like) throws HibernateException {
         return likeRepository.save(like);
     }
 
-    public void unlike(long likeId) throws HibernateException {
+    public void unlike(long likeId) throws ActorNotFoundException {
         if (!likeRepository.existsById(likeId))
-            throw new HibernateException("could not find like with id:"+likeId);
+            throw new ActorNotFoundException("could not find like with id:" + likeId);
         likeRepository.deleteById(likeId);
     }
 

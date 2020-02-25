@@ -6,6 +6,7 @@ import com.plapp.socialservice.repositories.CommentRepository;
 import org.hibernate.HibernateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sun.tools.jconsole.JConsole;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CommentService {
         return commentRepository.findByMediaContentTypeAndAndItemId(type, itemId);
     }
 
-    public void addComment(Comment comment) throws HibernateException {
-        commentRepository.save(comment);
+    public Comment addComment(Comment comment) throws HibernateException {
+        return commentRepository.save(comment);
     }
 }

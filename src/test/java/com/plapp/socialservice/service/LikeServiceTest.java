@@ -1,5 +1,6 @@
 package com.plapp.socialservice.service;
 
+import com.plapp.entities.exceptions.ActorNotFoundException;
 import com.plapp.entities.social.Like;
 import com.plapp.entities.social.MediaContentType;
 import com.plapp.entities.social.UserDetails;
@@ -60,7 +61,7 @@ class LikeServiceTest {
     @Test
     void testNotExistingUnlike() {
         when(likeRepository.existsById(any(Long.class))).thenReturn(false);
-        assertThrows(HibernateException.class, ()->{
+        assertThrows(ActorNotFoundException.class, ()->{
             likeService.unlike(123);
         });
     }
