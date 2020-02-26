@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" version="2.0">
 
-  <entity class="com.plapp.entities.social.Comment" name="Comment">
-    <attributes>
-      <id name="id">
-        <generated-value/>
-      </id>
-
-      <many-to-one name="author">
-        <cascade>
-          <cascade-persist/>
-          <cascade-merge/>
-        </cascade>
-      </many-to-one>
-
-    </attributes>
-  </entity>
-
-  <entity class="com.plapp.entities.social.Like" name="Like">
-    <attributes>
-      <id name="id">
-        <generated-value/>
-      </id>
-
-      <many-to-one name="author">
-        <cascade>
-          <cascade-persist/>
-          <cascade-merge/>
-        </cascade>
-      </many-to-one>
-
-    </attributes>
-  </entity>
   <entity class="com.plapp.entities.social.UserDetails" name="UserDetail">
     <attributes>
       <id name="userId">
@@ -39,4 +8,31 @@
       </id>
     </attributes>
   </entity>
+
+
+  <entity class="com.plapp.entities.social.Comment" name="Comment">
+    <attributes>
+      <id name="id">
+        <generated-value/>
+      </id>
+
+      <many-to-one name="author">
+      </many-to-one>
+
+    </attributes>
+
+  </entity>
+
+  <entity class="com.plapp.entities.social.Like" name="Likes">
+    <attributes>
+      <id name="id">
+        <generated-value/>
+      </id>
+
+      <many-to-one name="author">
+      </many-to-one>
+
+    </attributes>
+  </entity>
+
 </entity-mappings>

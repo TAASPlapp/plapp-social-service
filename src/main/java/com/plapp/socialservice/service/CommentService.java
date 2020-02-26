@@ -6,7 +6,6 @@ import com.plapp.socialservice.repositories.CommentRepository;
 import org.hibernate.HibernateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sun.tools.jconsole.JConsole;
 
 import java.util.List;
 
