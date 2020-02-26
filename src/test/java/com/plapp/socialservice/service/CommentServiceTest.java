@@ -16,7 +16,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-class CommentServiceTest {
+public class CommentServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
@@ -42,12 +42,9 @@ class CommentServiceTest {
     @Test
     void addComment() {
 //        when(commentRepository.save(any(Comment.class))).then(returnsFirstArg());
-
-        Comment testComment = getTestComment();
-
-        Comment res = commentService.addComment(testComment);
-
-//        assertThat(testComment.getItemId()).isEqualTo(res.getItemId());
+//        Comment testComment = getTestComment();
+//        Comment res = commentService.addComment(testComment);
+//
 //        assertEquals(testComment, res);
     }
 }

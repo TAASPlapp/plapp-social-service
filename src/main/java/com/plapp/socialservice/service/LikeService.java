@@ -22,13 +22,15 @@ public class LikeService {
         return likeRepository.findByMediaContentTypeAndAndItemId(mediaContentType, itemId);
     }
 
-    public Like addLike(Like like) throws HibernateException {
-        return likeRepository.save(like);
+    public Like addLike(Like like) throws HibernateException,ActorNotFoundException {
+        if (likeRepository.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty())
+            return likeRepository.save(like);
+        throw new ActorNotFoundException("Already liked");
     }
 
     public void unlike(long likeId) throws ActorNotFoundException {
         if (!likeRepository.existsById(likeId))
-            throw new ActorNotFoundException("could not find like with id:" + likeId);
+            throw new ActorNotFoundException("Like not found");
         likeRepository.deleteById(likeId);
     }
 

@@ -53,23 +53,24 @@ public class SocialController {
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
-        return new ApiResponse(true, "user datails updated");
+        return new ApiResponse(true, "User added successfully");
     }
 
     @CrossOrigin
-    @PostMapping("/user/modify")
-    public ApiResponse setUserDetails(@RequestBody UserDetails userDetails) {
+    @PostMapping("/user/update")
+    public ApiResponse updateUserDetails(@RequestBody UserDetails userDetails) {
         try {
             userDetailsService.modifyUserDetail(userDetails);
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
-        return new ApiResponse(true, "user datails updated");
+        return new ApiResponse(true, "User updated successfully");
     }
 
     @CrossOrigin
-    @GetMapping("/comments")
-    public List<Comment> getComments(@RequestBody MediaContentType type, @RequestParam long itemId) {
+    @GetMapping("/comment/{itemId}")
+    public List<Comment> getComments(@RequestBody MediaContentType type,
+                                     @PathVariable(value = "itemId") long itemId) {
         return commentService.findByMediaContentTypeAndAndItemId(type, itemId);
     }
 
@@ -81,21 +82,18 @@ public class SocialController {
         } catch (HibernateException e) {
             return new ApiResponse(false, e.getMessage());
         }
-        return new ApiResponse();
+        return new ApiResponse(true, "Comment added successfully");
     }
 
     @CrossOrigin
     @PostMapping("/like/add")
-    public ApiResponse addlike(@RequestParam Like like) {
-        if (likeService.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty()) {
-            try {
-                likeService.addLike(like);
-            } catch (HibernateException e) {
-                return new ApiResponse(false, e.getMessage());
-            }
-            return new ApiResponse();
+    public ApiResponse addlike(@RequestBody Like like) {
+        try {
+            likeService.addLike(like);
+        } catch (HibernateException | ActorNotFoundException e) {
+            return new ApiResponse(false, e.getMessage());
         }
-        return new ApiResponse(false, "already liked");
+        return new ApiResponse(true, "Like added successfully");
     }
 
     @CrossOrigin
@@ -106,18 +104,19 @@ public class SocialController {
         } catch (ActorNotFoundException e) {
             return new ApiResponse(false, e.getMessage());
         }
-        return new ApiResponse();
+        return new ApiResponse(true, "Like removed successfully");
     }
 
     @CrossOrigin
-    @GetMapping("/likes")
-    public List<UserDetails> getLikes(@RequestBody MediaContentType type, @RequestParam long itemId) {
+    @GetMapping("/like/{likeId}/users")
+    public List<UserDetails> getLikes(@RequestBody MediaContentType type,
+                                      @PathVariable(value = "likeId") long itemId) {
         try {
             return likeService.getLikes(type, itemId);
         } catch (HibernateException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
 
 

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class UserDetailsServiceTest {
+public class UserDetailsServiceTest {
 
     @Mock
     private UserDetailsRepository userDetailsRepository;
