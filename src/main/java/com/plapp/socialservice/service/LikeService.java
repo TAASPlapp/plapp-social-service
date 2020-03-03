@@ -18,12 +18,12 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
 
-    public List<Like> findByMediaContentTypeAndAndItemId(MediaContentType mediaContentType, long itemId) {
-        return likeRepository.findByMediaContentTypeAndAndItemId(mediaContentType, itemId);
+    public List<Like> findByMediaContentTypeAndItemId(MediaContentType mediaContentType, long itemId) {
+        return likeRepository.findByMediaContentTypeAndItemId(mediaContentType, itemId);
     }
 
     public Like addLike(Like like) throws HibernateException,ActorNotFoundException {
-        if (likeRepository.findByMediaContentTypeAndAndItemId(like.getMediaContentType(), like.getItemId()).isEmpty())
+        if (likeRepository.findByMediaContentTypeAndItemIdAndAuthor(like.getMediaContentType(), like.getItemId(), like.getAuthor()).isEmpty())
             return likeRepository.save(like);
         throw new ActorNotFoundException("Already liked");
     }
@@ -36,7 +36,7 @@ public class LikeService {
 
     public List<UserDetails> getLikes(MediaContentType type, long itemId) {
         List<UserDetails> users = new ArrayList<>();
-        List<Like> likes = likeRepository.findByMediaContentTypeAndAndItemId(type, itemId);
+        List<Like> likes = likeRepository.findByMediaContentTypeAndItemId(type, itemId);
         for (Like l : likes) {
             users.add(l.getAuthor());
         }

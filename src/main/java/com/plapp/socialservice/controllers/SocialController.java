@@ -69,9 +69,9 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/comment/{itemId}")
-    public List<Comment> getComments(@RequestBody MediaContentType type,
+    public List<Comment> getComments(@RequestParam MediaContentType type,
                                      @PathVariable(value = "itemId") long itemId) {
-        return commentService.findByMediaContentTypeAndAndItemId(type, itemId);
+        return commentService.findByMediaContentTypeAndItemId(type, itemId);
     }
 
     @CrossOrigin
@@ -109,7 +109,7 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/like/{likeId}/users")
-    public List<UserDetails> getLikes(@RequestBody MediaContentType type,
+    public List<UserDetails> getLikes(@RequestParam MediaContentType type,
                                       @PathVariable(value = "likeId") long itemId) {
         try {
             return likeService.getLikes(type, itemId);

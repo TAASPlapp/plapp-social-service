@@ -52,7 +52,7 @@ public class LikeServiceTest {
 
     @Test
     void addLike() {
-        when(likeRepository.findByMediaContentTypeAndAndItemId(any(MediaContentType.class), any(Long.class)))
+        when(likeRepository.findByMediaContentTypeAndItemId(any(MediaContentType.class), any(Long.class)))
                 .thenReturn(new ArrayList<Like>());
         when(likeRepository.save(any(Like.class))).then(returnsFirstArg());
         assertDoesNotThrow(() -> {
@@ -64,7 +64,7 @@ public class LikeServiceTest {
 
     @Test
     void addLike_alreadylike() {
-        when(likeRepository.findByMediaContentTypeAndAndItemId(any(MediaContentType.class), any(Long.class)))
+        when(likeRepository.findByMediaContentTypeAndItemId(any(MediaContentType.class), any(Long.class)))
                 .thenReturn(new ArrayList<Like>(Arrays.asList(getTestLike())));
         assertThrows(ActorNotFoundException.class, () -> {
             likeService.addLike(getTestLike());
@@ -84,7 +84,7 @@ public class LikeServiceTest {
         ArrayList<Like> likeList = new ArrayList<>();
         Like testLike = getTestLike();
         likeList.add(testLike);
-        when(likeRepository.findByMediaContentTypeAndAndItemId(any(MediaContentType.class), any(Long.class)))
+        when(likeRepository.findByMediaContentTypeAndItemId(any(MediaContentType.class), any(Long.class)))
                 .thenReturn(likeList);
         ArrayList<UserDetails> users = (ArrayList<UserDetails>) likeService.getLikes(MediaContentType.Storyboard, 2131);
         assertEquals(users.get(0), testLike.getAuthor());
