@@ -46,8 +46,9 @@ public class SocialController {
     }
 
     @CrossOrigin
-    @PostMapping("/user/add")
-    public ApiResponse addUserDetails(@RequestBody UserDetails user) {
+    @PostMapping("/user/{userId}/add")
+    public ApiResponse addUserDetails(@PathVariable(value = "userId") long userId,
+                                      @RequestBody UserDetails user) {
         try {
             userDetailsService.addUser(user);
         } catch (HibernateException e) {
@@ -57,8 +58,9 @@ public class SocialController {
     }
 
     @CrossOrigin
-    @PostMapping("/user/update")
-    public ApiResponse updateUserDetails(@RequestBody UserDetails userDetails) {
+    @PostMapping("/user/{userId}/update")
+    public ApiResponse updateUserDetails(@PathVariable(value = "userId") long userId,
+                                         @RequestBody UserDetails userDetails) {
         try {
             userDetailsService.modifyUserDetail(userDetails);
         } catch (HibernateException e) {
@@ -75,8 +77,9 @@ public class SocialController {
     }
 
     @CrossOrigin
-    @PostMapping("/comment/add")
-    public ApiResponse addComment(@RequestBody Comment comment) {
+    @PostMapping("/comment/{commentId}/add")
+    public ApiResponse addComment(@PathVariable(value = "commentId") long commentId,
+                                  @RequestBody Comment comment) {
         try {
             commentService.addComment(comment);
         } catch (HibernateException e) {
@@ -86,8 +89,9 @@ public class SocialController {
     }
 
     @CrossOrigin
-    @PostMapping("/like/add")
-    public ApiResponse addlike(@RequestBody Like like) {
+    @PostMapping("/like/{likeId}/add")
+    public ApiResponse addlike(@PathVariable(value = "likeId") long likeId,
+                               @RequestBody Like like) {
         try {
             likeService.addLike(like);
         } catch (HibernateException | ActorNotFoundException e) {
