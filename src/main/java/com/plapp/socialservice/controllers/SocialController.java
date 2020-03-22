@@ -60,6 +60,7 @@ public class SocialController {
     @PostMapping("/user/{userId}/add")
     public UserDetails addUserDetails(@PathVariable(value = "userId") long userId,
                                       @RequestBody UserDetails user) {
+        user.setUserId(userId);
         return userDetailsService.addUser(user);
 
     }
@@ -68,6 +69,7 @@ public class SocialController {
     @PostMapping("/user/{userId}/update")
     public UserDetails updateUserDetails(@PathVariable(value = "userId") long userId,
                                          @RequestBody UserDetails userDetails) {
+        userDetails.setUserId(userId);
         return userDetailsService.modifyUserDetail(userDetails);
 
     }
@@ -81,17 +83,17 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/comment/{commentId}/add")
-    public Comment addComment(@PathVariable(value = "commentId") long commentId,
+    public Comment addComment(@PathVariable(value = "commentId") long itemId,
                               @RequestBody Comment comment) {
-        comment.setId(commentId);
+        comment.setItemId(itemId);
         return commentService.addComment(comment);
     }
 
     @CrossOrigin
     @PostMapping("/like/{likeId}/add")
-    public Like addlike(@PathVariable(value = "likeId") long likeId,
+    public Like addlike(@PathVariable(value = "likeId") long itemId,
                         @RequestBody Like like) throws ActorNotFoundException {
-        like.setId(likeId);
+        like.setItemId(itemId);
         return likeService.addLike(like);
 
     }
