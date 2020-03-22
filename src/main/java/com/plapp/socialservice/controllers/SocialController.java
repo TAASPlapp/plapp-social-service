@@ -6,7 +6,6 @@ import com.plapp.entities.social.Comment;
 import com.plapp.entities.social.Like;
 import com.plapp.entities.social.MediaContentType;
 import com.plapp.entities.social.UserDetails;
-import com.plapp.entities.utils.ApiResponse;
 import com.plapp.socialservice.service.CommentService;
 import com.plapp.socialservice.service.LikeService;
 import com.plapp.socialservice.service.UserDetailsService;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,7 +59,7 @@ public class SocialController {
     public UserDetails addUserDetails(@PathVariable(value = "userId") long userId,
                                       @RequestBody UserDetails user) {
         user.setUserId(userId);
-        return userDetailsService.addUser(user);
+        return userDetailsService.setUserDetails(user);
 
     }
 
@@ -70,7 +68,7 @@ public class SocialController {
     public UserDetails updateUserDetails(@PathVariable(value = "userId") long userId,
                                          @RequestBody UserDetails userDetails) {
         userDetails.setUserId(userId);
-        return userDetailsService.modifyUserDetail(userDetails);
+        return userDetailsService.setUserDetails(userDetails);
 
     }
 

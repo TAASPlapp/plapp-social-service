@@ -315,7 +315,7 @@ class SocialControllerTest {
 
     @Test
     void addUserDetails_throwsException() throws Exception {
-        doThrow(new HibernateException("hibernate exception")).when(userDetailsService).addUser(any(UserDetails.class));
+        doThrow(new HibernateException("hibernate exception")).when(userDetailsService).setUserDetails(any(UserDetails.class));
         UserDetails testUser = UserDetailsServiceTest.getTestUser();
 
         MvcResult mvcResult = mockMvc.perform(post("/social/user/add")

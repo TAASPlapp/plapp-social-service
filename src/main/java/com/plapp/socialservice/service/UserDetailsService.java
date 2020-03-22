@@ -17,20 +17,8 @@ public class UserDetailsService {
         return userDetailsRepository.findByUserId(userId);
     }
 
-    public UserDetails addUser(UserDetails user) throws HibernateException {
+    public UserDetails setUserDetails(UserDetails user) throws HibernateException {
         return userDetailsRepository.save(user);
     }
-
-    public UserDetails modifyUserDetail(UserDetails userDetails) throws HibernateException {
-        UserDetails user = userDetailsRepository.findByUserId(userDetails.getUserId());
-        user.setBio(userDetails.getBio());
-        user.setBirthdate(userDetails.getBirthdate());
-        user.setFirstName(userDetails.getFirstName());
-        user.setLastName(userDetails.getLastName());
-        user.setProfilePicture(userDetails.getProfilePicture());
-        user.setUsername(userDetails.getUsername());
-        return userDetailsRepository.save(user);
-    }
-
 
 }

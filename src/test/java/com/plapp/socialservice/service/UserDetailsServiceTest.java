@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import java.util.Date;
 
@@ -48,7 +47,7 @@ public class UserDetailsServiceTest {
         when(userDetailsRepository.save(any(UserDetails.class))).then(returnsFirstArg());
         UserDetails testUser = getTestUser();
 
-        UserDetails savedUser = userService.addUser(testUser);
+        UserDetails savedUser = userService.setUserDetails(testUser);
         assertThat(savedUser.getFirstName()).isNotNull().isEqualTo(testUser.getFirstName());
         assertThat(savedUser.getLastName()).isNotNull().isEqualTo(testUser.getLastName());
         assertThat(savedUser.getUsername()).isNotNull().isEqualTo(testUser.getUsername());
