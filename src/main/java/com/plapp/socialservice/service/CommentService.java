@@ -15,7 +15,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public List<Comment> findByMediaContentTypeAndItemId(MediaContentType type, long itemId) {
+    public List<Comment> findByMediaContentTypeAndItemId(MediaContentType type, long itemId) throws HibernateException {
         return commentRepository.findByMediaContentTypeAndItemId(type, itemId);
     }
 

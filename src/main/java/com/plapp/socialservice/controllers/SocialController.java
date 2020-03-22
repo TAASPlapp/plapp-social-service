@@ -7,14 +7,12 @@ import com.plapp.entities.social.Like;
 import com.plapp.entities.social.MediaContentType;
 import com.plapp.entities.social.UserDetails;
 import com.plapp.entities.utils.ApiResponse;
-import com.plapp.socialservice.repositories.CommentRepository;
-import com.plapp.socialservice.repositories.LikeRepository;
-import com.plapp.socialservice.repositories.UserDetailsRepository;
 import com.plapp.socialservice.service.CommentService;
 import com.plapp.socialservice.service.LikeService;
 import com.plapp.socialservice.service.UserDetailsService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,6 +36,19 @@ public class SocialController {
         this.userDetailsService = userDetailsService;
     }
 
+    @ControllerAdvice
+    public static class SocialControllerAdvice {
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        @ExceptionHandler({ActorNotFoundException.class})
+        public void handle(ActorNotFoundException e) {
+        }
+
+        @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+        @ExceptionHandler({HibernateException.class})
+        public void handle() {
+        }
+    }
+
 
     @CrossOrigin
     @GetMapping("/user/{userId}")
@@ -47,26 +58,18 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/user/{userId}/add")
-    public ApiResponse addUserDetails(@PathVariable(value = "userId") long userId,
+    public UserDetails addUserDetails(@PathVariable(value = "userId") long userId,
                                       @RequestBody UserDetails user) {
-        try {
-            userDetailsService.addUser(user);
-        } catch (HibernateException e) {
-            return new ApiResponse(false, e.getMessage());
-        }
-        return new ApiResponse(true, "User added successfully");
+        return userDetailsService.addUser(user);
+
     }
 
     @CrossOrigin
     @PostMapping("/user/{userId}/update")
-    public ApiResponse updateUserDetails(@PathVariable(value = "userId") long userId,
+    public UserDetails updateUserDetails(@PathVariable(value = "userId") long userId,
                                          @RequestBody UserDetails userDetails) {
-        try {
-            userDetailsService.modifyUserDetail(userDetails);
-        } catch (HibernateException e) {
-            return new ApiResponse(false, e.getMessage());
-        }
-        return new ApiResponse(true, "User updated successfully");
+        return userDetailsService.modifyUserDetail(userDetails);
+
     }
 
     @CrossOrigin
@@ -78,49 +81,32 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/comment/{commentId}/add")
-    public ApiResponse addComment(@PathVariable(value = "commentId") long commentId,
-                                  @RequestBody Comment comment) {
-        try {
-            commentService.addComment(comment);
-        } catch (HibernateException e) {
-            return new ApiResponse(false, e.getMessage());
-        }
-        return new ApiResponse(true, "Comment added successfully");
+    public Comment addComment(@PathVariable(value = "commentId") long commentId,
+                              @RequestBody Comment comment) {
+        comment.setId(commentId);
+        return commentService.addComment(comment);
     }
 
     @CrossOrigin
     @PostMapping("/like/{likeId}/add")
-    public ApiResponse addlike(@PathVariable(value = "likeId") long likeId,
-                               @RequestBody Like like) {
-        try {
-            likeService.addLike(like);
-        } catch (HibernateException | ActorNotFoundException e) {
-            return new ApiResponse(false, e.getMessage());
-        }
-        return new ApiResponse(true, "Like added successfully");
+    public Like addlike(@PathVariable(value = "likeId") long likeId,
+                        @RequestBody Like like) throws ActorNotFoundException {
+        like.setId(likeId);
+        return likeService.addLike(like);
+
     }
 
     @CrossOrigin
     @GetMapping("/like/{likeId}/remove")
-    public ApiResponse removeLike(@PathVariable(value = "likeId") long likeId) {
-        try {
-            likeService.unlike(likeId);
-        } catch (ActorNotFoundException e) {
-            return new ApiResponse(false, e.getMessage());
-        }
-        return new ApiResponse(true, "Like removed successfully");
+    public void removeLike(@PathVariable(value = "likeId") long likeId) throws ActorNotFoundException {
+        likeService.unlike(likeId);
     }
 
     @CrossOrigin
-    @GetMapping("/like/{likeId}/users")
+    @GetMapping("/like/{itemId}/users")
     public List<UserDetails> getLikes(@RequestParam MediaContentType type,
-                                      @PathVariable(value = "likeId") long itemId) {
-        try {
-            return likeService.getLikes(type, itemId);
-        } catch (HibernateException e) {
-            System.out.println(e.getMessage());
-            return new ArrayList<>();
-        }
+                                      @PathVariable(value = "itemId") long itemId) {
+        return likeService.getLikes(type, itemId);
     }
 
 
