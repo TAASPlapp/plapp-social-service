@@ -4,7 +4,6 @@
   <entity class="com.plapp.entities.social.UserDetails" name="UserDetail">
     <attributes>
       <id name="userId">
-        <generated-value/>
       </id>
     </attributes>
   </entity>
