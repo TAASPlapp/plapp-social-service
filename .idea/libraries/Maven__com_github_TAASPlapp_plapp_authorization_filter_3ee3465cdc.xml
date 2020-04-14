@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.TAASPlapp:plapp-authorization-filter:3ee3465cdc">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/TAASPlapp/plapp-authorization-filter/3ee3465cdc/plapp-authorization-filter-3ee3465cdc.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/TAASPlapp/plapp-authorization-filter/3ee3465cdc/plapp-authorization-filter-3ee3465cdc-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/TAASPlapp/plapp-authorization-filter/3ee3465cdc/plapp-authorization-filter-3ee3465cdc-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
