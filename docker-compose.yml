@@ -1,20 +1,47 @@
 version: "3"
 
 networks:
-  auth-network:
+  social-network:
 
 services:
   plapp-social-db:
     image: postgres:latest
     container_name: plapp-social-db
     ports:
-      - "5434:5433"
+      - "5433:5432"
     env_file:
       - postgres.env
     volumes:
       - database-data:/var/lib/postgresql/data
     networks:
-      - auth-network
+      - social-network
+
+  plapp-social-service:
+    image: maven:latest
+    working_dir: $PWD
+    container_name: plapp-social-service
+    volumes:
+      - $PWD:$PWD
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn spring-boot:run
+    networks:
+      - social-network
+    depends_on:
+      - plapp-social-db
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - plapp-social-service
+    ports:
+      - "4000:4000"
+    networks:
+      - social-network
 
 volumes:
   database-data:
