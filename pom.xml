@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.github.TAASPlapp</groupId>
       <artifactId>plapp-authorization-filter</artifactId>
-      <version>3ee3465cdc</version>
+      <version>cef93a2a8c</version>
     </dependency>
 
     <dependency>
