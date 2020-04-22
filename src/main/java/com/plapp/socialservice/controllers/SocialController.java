@@ -12,6 +12,7 @@ import com.plapp.socialservice.service.UserDetailsService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -83,6 +84,11 @@ public class SocialController {
     @PostMapping("/comment/{commentId}/add")
     public Comment addComment(@PathVariable(value = "commentId") long itemId,
                               @RequestBody Comment comment) {
+        UserDetails userDetails = userDetailsService.findByUserId(
+                (Long)SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        );
+        comment.setAuthor(userDetails);
+
         System.out.println("Adding comment with author: " + comment.getAuthor());
         comment.setItemId(itemId);
         return commentService.addComment(comment);
@@ -99,7 +105,12 @@ public class SocialController {
     @PostMapping("/like/{likeId}/add")
     public Like addlike(@PathVariable(value = "likeId") long itemId,
                         @RequestBody Like like) throws ActorNotFoundException {
+        UserDetails userDetails = userDetailsService.findByUserId(
+                (Long)SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        );
+        like.setAuthor(userDetails);
         like.setItemId(itemId);
+        System.out.println("Adding like with author: " + like.getAuthor());
         return likeService.addLike(like);
 
     }
