@@ -22,10 +22,10 @@ public class LikeService {
         return likeRepository.findByMediaContentTypeAndItemId(mediaContentType, itemId);
     }
 
-    public Like addLike(Like like) throws HibernateException, ActorNotFoundException {
+    public Like addLike(Like like) throws HibernateException {
         if (likeRepository.findByMediaContentTypeAndItemIdAndAuthor(like.getMediaContentType(), like.getItemId(), like.getAuthor()).isEmpty())
             return likeRepository.save(like);
-        throw new ActorNotFoundException("Already liked");
+        throw new IllegalArgumentException("Already liked");
     }
 
     public void unlike(long likeId) throws ActorNotFoundException {

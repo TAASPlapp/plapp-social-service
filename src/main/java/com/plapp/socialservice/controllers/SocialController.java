@@ -104,7 +104,7 @@ public class SocialController {
     @CrossOrigin
     @PostMapping("/like/{likeId}/add")
     public Like addlike(@PathVariable(value = "likeId") long itemId,
-                        @RequestBody Like like) throws ActorNotFoundException {
+                        @RequestBody Like like) {
         UserDetails userDetails = userDetailsService.findByUserId(
                 (Long)SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         );
