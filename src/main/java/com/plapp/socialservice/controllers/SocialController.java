@@ -83,6 +83,7 @@ public class SocialController {
     @PostMapping("/comment/{commentId}/add")
     public Comment addComment(@PathVariable(value = "commentId") long itemId,
                               @RequestBody Comment comment) {
+        System.out.println("Adding comment with author: " + comment.getAuthor());
         comment.setItemId(itemId);
         return commentService.addComment(comment);
     }
