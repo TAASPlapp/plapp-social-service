@@ -46,6 +46,10 @@ public class SocialController {
         @ExceptionHandler({HibernateException.class})
         public void handle() {
         }
+
+        @ResponseStatus(HttpStatus.BAD_REQUEST)
+        @ExceptionHandler({IllegalArgumentException.class})
+        public void handleBadRequest() {}
     }
 
 
