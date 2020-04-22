@@ -65,7 +65,7 @@ public class SocialController {
 
     @CrossOrigin
     @PostMapping("/user/{userId}/update")
-    public UserDetails updateUserDetails(@PathVariable(value = "userId") long userId,
+    public UserDetails updateUserDetails(@PathVariable long userId,
                                          @RequestBody UserDetails userDetails) {
         userDetails.setUserId(userId);
         return userDetailsService.setUserDetails(userDetails);
@@ -74,8 +74,8 @@ public class SocialController {
 
     @CrossOrigin
     @GetMapping("/comment/{itemId}")
-    public List<Comment> getComments(@RequestParam MediaContentType type,
-                                     @PathVariable(value = "itemId") long itemId) {
+    public List<Comment> getComments(@RequestBody MediaContentType type,
+                                     @PathVariable long itemId) {
         return commentService.findByMediaContentTypeAndItemId(type, itemId);
     }
 
@@ -85,6 +85,13 @@ public class SocialController {
                               @RequestBody Comment comment) {
         comment.setItemId(itemId);
         return commentService.addComment(comment);
+    }
+
+    @CrossOrigin
+    @PostMapping("/like/{itemId}")
+    public List<Like> getItemLikes(@PathVariable Long itemId,
+                                   @RequestBody MediaContentType type) {
+        return likeService.findByMediaContentTypeAndItemId(type, itemId);
     }
 
     @CrossOrigin
